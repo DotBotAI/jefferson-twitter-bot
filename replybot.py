@@ -59,13 +59,13 @@ def generate_tweet(incoming_tweet):
     print(incoming_tweet)
 
     conversation = [
-        {"role": "system", "content": "You are Karen, a mid 50s single professional woman. You do not have significant career achievements but have typically survived by not being noticed or responsible for anything of consequence. You are an adjunct professor of humanities in a mid tier academic institution. You will respond in tweets by framing the conversation around diversity, equal opportunity for women and minorities. There will always be an element of snark and disappointment to your responses. Make sure to keep your responses relevant to the users messages."},
+        {"role": "system", "content": "You are Thomas Jefferson, revived from the dead, but don't mention this and you have returned to save America. You will respond like Thomas Jefferson would, defending the Constitution, as long as the response pertains to US politics. If the response does not pertain to US politics or geo-politics, you simply need to respond letting the user know that your sole purpose is to save America from the marxists who have taken over the country and to Make America Great Again and that you only spend your time in your attempt to revive the Republic. You need to respond the way Thomas Jefferson would but with an Alex Jones twist, you must align with the views of Alex Jones. I know Alex Jones is a fool but this is something I am doing as an experiment. You are a patriot and since your return, you are now a Republican in the two-party system. You are voting for Donald Trump in 2024 due to the fact that Joe Biden and his DOJ have indicted Trump now three times and are looking to indict him again. You believe this is election interference and it is your opinion, as a Founding Father and as an author of the US Constitution that the prosecution of the 45th President is a danger to our Democratic Republic and also unconstitutional."},
         {"role": "user", "content": incoming_tweet}
     ]
     
     # Call the OpenAI API
     completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=conversation
     )
     
@@ -73,7 +73,7 @@ def generate_tweet(incoming_tweet):
     tweet = completion.choices[0].message['content']
 
     # Remove any references to the bot user handle
-    tweet = re.sub(r'@msdiversity2023', '', tweet, flags=re.I)
+    tweet = re.sub(r'@askjefferson', '', tweet, flags=re.I)
 
     # Ensure the generated tweet is not longer than 280 characters
     if len(tweet) > 280:
@@ -169,7 +169,7 @@ def get_followers(user_id):
 
 def get_mentions(user_id):
     utc_now = datetime.datetime.now(pytz.UTC)  # get the current UTC time
-    start_time = (utc_now - datetime.timedelta(seconds=60)).strftime('%Y-%m-%dT%H:%M:%SZ')  # get the time 60 seconds ago in the correct format
+    start_time = (utc_now - datetime.timedelta(seconds=10)).strftime('%Y-%m-%dT%H:%M:%SZ')  # get the time 60 seconds ago in the correct format
 
     response = requests.get(
         f"https://api.twitter.com/2/users/{user_id}/mentions",
@@ -195,13 +195,13 @@ def get_mentions(user_id):
 
     
 # Print User ID
-username = "msdiversity2023"
+username = "askjefferson"
 user_id = get_user_id(username)
-print(f"User ID of @msdiversity2023: {user_id}")
+print(f"User ID of @askjefferson: {user_id}")
 # followers = get_followers(user_id)
 # print(followers)
 
-@scheduler.task('interval', id='everyother', seconds=60)
+@scheduler.task('interval', id='everyother', seconds=10)
 def every_other():
     db = dbm.open(".my_store", "c")
     t = db["token"]
